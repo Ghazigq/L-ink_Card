@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        // 编译
+        {
+            "type": "shell",
+            "label": "build",
+            "command": "make",
+            "group": "build"
+        },
+        // 清空
+        {
+            "type": "shell",
+            "label": "clean",
+            "command": "make clean",
+            "group": "build"
+        },
+        // 烧录
+        {
+            "type": "shell",
+            "label": "download",
+            "command": "openocd",
+            "args": [
+                // 指定调试器配置文件
+                "-f",
+                "stlink-v2.cfg",
+                // 指定芯片配置文件
+                "-f",
+                "stm32l0.cfg",
+                // 配置调试器使用硬件复位 none (默认), trst_only, srst_only and trst_and_srst.
+                "-c",
+                "reset_config trst_only",
+                // 初始化后挂起目标芯片
+                "-c",
+                "init",
+                "-c",
+                "halt",
+                // 指定烧录文件app.elf，并在烧录完成后复位退出连接
+                "-c",
+                "program build/L-ink_Card.elf reset exit"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+    ]
+}
